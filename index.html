@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M&E Forms Portal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #F7F5F0;
+    --surface: #FFFFFF;
+    --border: #E2DDD5;
+    --border-strong: #C8C2B8;
+    --text: #1A1714;
+    --text-muted: #7A7570;
+    --text-light: #ADA8A2;
+    --accent: #2A5C45;
+    --accent-light: #EBF3EF;
+    --accent-mid: #C5DDD3;
+    --tag-1-bg: #FEF3E2; --tag-1-text: #7A4E0A;
+    --tag-2-bg: #E8F4F0; --tag-2-text: #1A5C42;
+    --tag-3-bg: #F0EBF8; --tag-3-text: #5A3A8A;
+    --tag-4-bg: #FDE8E8; --tag-4-text: #8A2A2A;
+    --tag-5-bg: #E8EEF8; --tag-5-text: #2A3E8A;
+    --tag-6-bg: #F5F0E8; --tag-6-text: #6A5A3A;
+    --radius: 10px;
+    --radius-sm: 6px;
+    --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+    --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  /* ── HEADER ── */
+  .site-header {
+    background: var(--accent);
+    padding: 28px 40px 24px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 16px;
+  }
+  .site-header-left h1 {
+    font-size: 22px;
+    font-weight: 600;
+    color: #FFFFFF;
+    letter-spacing: -0.3px;
+    margin-bottom: 3px;
+  }
+  .site-header-left p {
+    font-size: 13px;
+    color: rgba(255,255,255,0.65);
+  }
+  .setup-link {
+    font-size: 12px;
+    color: rgba(255,255,255,0.55);
+    text-decoration: none;
+    border: 1px solid rgba(255,255,255,0.2);
+    padding: 6px 12px;
+    border-radius: var(--radius-sm);
+    white-space: nowrap;
+    transition: all 0.15s;
+    cursor: pointer;
+  }
+  .setup-link:hover { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.9); }
+
+  /* ── NOTICE BANNER ── */
+  .notice {
+    background: #FFFBEB;
+    border-bottom: 1px solid #F0D98A;
+    padding: 12px 40px;
+    font-size: 13px;
+    color: #7A5A10;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .notice strong { font-weight: 600; }
+  .notice a { color: #2A5C45; font-weight: 500; }
+  .notice.hidden { display: none; }
+
+  /* ── MAIN LAYOUT ── */
+  .main { padding: 32px 40px; max-width: 1200px; margin: 0 auto; }
+
+  /* ── FILTER BAR ── */
+  .filter-section { margin-bottom: 24px; }
+  .filter-label { font-size: 12px; font-weight: 500; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 10px; }
+  .filter-pills { display: flex; flex-wrap: wrap; gap: 8px; }
+  .pill {
+    padding: 6px 14px;
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-muted);
+    background: var(--surface);
+    cursor: pointer;
+    transition: all 0.15s;
+    white-space: nowrap;
+  }
+  .pill:hover { border-color: var(--border-strong); color: var(--text); }
+  .pill.active { background: var(--accent); border-color: var(--accent); color: #FFFFFF; }
+
+  /* ── SEARCH ── */
+  .search-wrap { position: relative; margin-bottom: 24px; }
+  .search-wrap svg { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--text-light); pointer-events: none; }
+  #searchInput {
+    width: 100%;
+    padding: 11px 16px 11px 42px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--surface);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.15s, box-shadow 0.15s;
+    box-shadow: var(--shadow);
+  }
+  #searchInput:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(42,92,69,0.1); }
+  #searchInput::placeholder { color: var(--text-light); }
+
+  /* ── STATS ── */
+  .stats-bar { display: flex; gap: 24px; margin-bottom: 24px; }
+  .stat { font-size: 13px; color: var(--text-muted); }
+  .stat strong { color: var(--text); font-weight: 600; }
+
+  /* ── CARDS ── */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 14px;
+  }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 18px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    box-shadow: var(--shadow);
+    transition: box-shadow 0.15s, border-color 0.15s, transform 0.15s;
+    animation: fadeIn 0.2s ease both;
+  }
+  .card:hover { box-shadow: var(--shadow-md); border-color: var(--border-strong); transform: translateY(-1px); }
+
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+  .card-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
+  .card-name { font-size: 15px; font-weight: 600; color: var(--text); line-height: 1.3; letter-spacing: -0.1px; }
+  .role-tag {
+    font-size: 11px;
+    font-weight: 500;
+    padding: 3px 9px;
+    border-radius: 100px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .card-purpose { font-size: 13px; color: var(--text-muted); line-height: 1.55; flex: 1; }
+  .open-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 9px 16px;
+    background: var(--accent-light);
+    border: 1px solid var(--accent-mid);
+    border-radius: var(--radius-sm);
+    color: var(--accent);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.15s;
+    align-self: flex-start;
+    margin-top: 2px;
+  }
+  .open-btn:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .open-btn svg { transition: transform 0.15s; }
+  .open-btn:hover svg { transform: translate(2px, -2px); }
+
+  /* ── EMPTY STATE ── */
+  .empty { text-align: center; padding: 60px 20px; color: var(--text-muted); }
+  .empty svg { margin-bottom: 12px; opacity: 0.3; }
+  .empty p { font-size: 15px; }
+
+  /* ── LOADING ── */
+  .loading { text-align: center; padding: 60px 20px; color: var(--text-muted); }
+  .spinner {
+    width: 28px; height: 28px;
+    border: 2.5px solid var(--border);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    margin: 0 auto 12px;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ── SETUP MODAL ── */
+  .modal-overlay {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.45);
+    z-index: 100;
+    display: flex; align-items: center; justify-content: center;
+    padding: 20px;
+  }
+  .modal-overlay.hidden { display: none; }
+  .modal {
+    background: var(--surface);
+    border-radius: 14px;
+    padding: 32px;
+    max-width: 560px;
+    width: 100%;
+    box-shadow: var(--shadow-md);
+  }
+  .modal h2 { font-size: 18px; font-weight: 600; margin-bottom: 6px; letter-spacing: -0.2px; }
+  .modal .subtitle { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+  .steps { display: flex; flex-direction: column; gap: 14px; margin-bottom: 24px; }
+  .step { display: flex; gap: 14px; align-items: flex-start; }
+  .step-num {
+    width: 26px; height: 26px;
+    background: var(--accent);
+    color: #fff;
+    border-radius: 50%;
+    font-size: 13px;
+    font-weight: 600;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .step-body { flex: 1; }
+  .step-body strong { font-size: 14px; font-weight: 600; display: block; margin-bottom: 2px; }
+  .step-body span { font-size: 13px; color: var(--text-muted); }
+  .step-body a { color: var(--accent); font-weight: 500; }
+  .url-input-wrap { display: flex; gap: 8px; margin-top: 8px; }
+  .url-input-wrap input {
+    flex: 1;
+    padding: 9px 12px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-size: 13px;
+    font-family: 'DM Mono', monospace;
+    color: var(--text);
+    background: var(--bg);
+    outline: none;
+  }
+  .url-input-wrap input:focus { border-color: var(--accent); }
+  .connect-btn {
+    padding: 9px 16px;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: var(--radius-sm);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: opacity 0.15s;
+  }
+  .connect-btn:hover { opacity: 0.88; }
+  .modal-close {
+    display: block;
+    text-align: center;
+    font-size: 13px;
+    color: var(--text-muted);
+    cursor: pointer;
+    margin-top: 4px;
+    text-decoration: underline;
+  }
+  .error-msg { font-size: 12px; color: #C0392B; margin-top: 6px; display: none; }
+
+  /* ── FOOTER ── */
+  .site-footer {
+    text-align: center;
+    padding: 24px 40px;
+    font-size: 12px;
+    color: var(--text-light);
+    border-top: 1px solid var(--border);
+    margin-top: 40px;
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 640px) {
+    .site-header { padding: 20px; flex-direction: column; align-items: flex-start; }
+    .main { padding: 20px; }
+    .cards-grid { grid-template-columns: 1fr; }
+    .stats-bar { gap: 16px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="site-header">
+  <div class="site-header-left">
+    <h1>M&amp;E Forms Portal</h1>
+    <p>Monitoring &amp; Evaluation data capture — implementing partners</p>
+  </div>
+  <a href="#" class="setup-link" onclick="showSetup(); return false;">⚙ Connect Google Sheet</a>
+</header>
+
+<!-- NOTICE (shown when no sheet connected) -->
+<div class="notice" id="noSheetNotice">
+  <span>⚠</span>
+  <span><strong>Using built-in data.</strong> To enable live Google Sheets updates, click <a href="#" onclick="showSetup(); return false;">Connect Google Sheet</a>.</span>
+</div>
+
+<!-- MAIN -->
+<main class="main">
+
+  <div class="filter-section">
+    <div class="filter-label">Filter by role</div>
+    <div class="filter-pills" id="filterPills"></div>
+  </div>
+
+  <div class="search-wrap">
+    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+    <input type="text" id="searchInput" placeholder="Search forms by name or purpose…" oninput="renderCards()">
+  </div>
+
+  <div class="stats-bar">
+    <div class="stat">Showing <strong id="statCount">0</strong> forms</div>
+  </div>
+
+  <div id="cardsGrid" class="cards-grid">
+    <div class="loading"><div class="spinner"></div><p>Loading forms…</p></div>
+  </div>
+
+</main>
+
+<footer class="site-footer">
+  Last updated from Google Sheets · <span id="lastUpdated">—</span>
+</footer>
+
+<!-- SETUP MODAL -->
+<div class="modal-overlay hidden" id="setupModal" onclick="if(event.target===this)hideSetup()">
+  <div class="modal">
+    <h2>Connect your Google Sheet</h2>
+    <p class="subtitle">Once connected, edit the Sheet to update links for everyone instantly — no code needed.</p>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <strong>Copy the template Sheet</strong>
+          <span>Open the <a href="https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgVE2upms/copy" target="_blank">M&amp;E Portal Template ↗</a> and click <em>Make a copy</em> to save it to your Drive.</span>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <strong>Publish the Sheet</strong>
+          <span>In your copy: <em>File → Share → Publish to web</em> → choose <em>Sheet1</em> → <em>CSV</em> → click <em>Publish</em>. Copy the URL it gives you.</span>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <strong>Paste the URL below</strong>
+          <div class="url-input-wrap">
+            <input type="url" id="sheetUrl" placeholder="https://docs.google.com/spreadsheets/d/…/pub?…" />
+            <button class="connect-btn" onclick="connectSheet()">Connect</button>
+          </div>
+          <div class="error-msg" id="sheetError">Could not load that Sheet. Make sure it's published as CSV and try again.</div>
+        </div>
+      </div>
+    </div>
+    <a class="modal-close" onclick="hideSetup()">Cancel — keep using built-in data</a>
+  </div>
+</div>
+
+<script>
+// ─────────────────────────────────────────────────────────────
+//  ✏️  ADMIN: Paste your published Google Sheet CSV URL below.
+//  Leave as empty string "" to use the built-in fallback data.
+// ─────────────────────────────────────────────────────────────
+const SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQSucsfle_-aZ7zPf1Dur3ulsioNYKhodqD-5nctZbdNtHw4fmUHVmnsTnn2vMkRPergVIP_U_xDc_D/pub?gid=305740545&single=true&output=csv";
+
+// ── BUILT-IN FALLBACK DATA ──
+const BUILTIN = [
+  { name: "Enrollment Form", user: "Ignitors", purpose: "To enrol new young people into the system", link: "https://form.jotform.com/250931415444554/prefill/0199035b2b56716ca08182f457ab2bfc6c70" },
+  { name: "PDF Enrollment Form", user: "Ignitors", purpose: "Printable/editable form for enrolment at peer support groups or events. Complete on PC/tablet before transferring to the Enrollment Form.", link: "https://drive.google.com/file/d/1XwPnRLVeM8juPreUiN0bfkbeResn2owT/view?usp=drive_link" },
+  { name: "Coach Assignment Form", user: "ALL TEAM", purpose: "To assign a young person to a Coach if they decide to do coaching after enrollment.", link: "https://form.jotform.com/260362872736059/prefill/019c32a3c7d87eac8ddacf2c375d25726c70" },
+  { name: "Touch Point Survey", user: "Coaches & Guides", purpose: "Completed at intake session and post session 3 to evaluate programme impact for young people.", link: "https://form.jotform.com/250831258643559/prefill/01960f2305387eccbce8ee9404c484476c70" },
+  { name: "M&E Form", user: "ALL TEAM", purpose: "To capture any engagement with a young person — support needs, peer connect, and peer support groups held.", link: "https://form.jotform.com/250931494080557/prefill/01960f268ff875b6936c0f63def0b34a6c70" },
+  { name: "Status Form", user: "Coaches & Guides", purpose: "To capture status of young people who haven't had sessions for some time.", link: "https://form.jotform.com/242701333372044/prefill/0192320d08237f649cba2e535969305e6c70" },
+  { name: "Role Play Form", user: "Guides", purpose: "To capture continuous learning moments for coaches during role plays.", link: "https://form.jotform.com/242551283487058/prefill/0191e57371ff7e28b49f9a0bd5ad684b6c70" },
+  { name: "Journey Book Review Form", user: "Guides", purpose: "To capture learnings for coaches while reviewing journey books.", link: "https://form.jotform.com/242551497731057/prefill/0191e4bc127779db8a07ac40d3747bcf6c70" },
+  { name: "Youth Service Provider Form", user: "ALL TEAM", purpose: "Collect data about service providers for service mapping.", link: "https://form.jotform.com/230193793534561/prefill/019197bbdcad71c2aaba9f0fccd13aaa6c70" },
+  { name: "Youth Collective Activity Form", user: "Conveners", purpose: "To capture meetings convened and attendance of service providers at Youth Collectives.", link: "https://form.jotform.com/251911994224056/prefill/019c2bc9c9f579f3af2f8d60d8cfe1766c70" },
+  { name: "Incident Report Form", user: "Managers", purpose: "To capture any incidents affecting programme implementation (e.g. protests affecting recruitment or sessions).", link: "https://form.jotform.com/242701333372044/prefill/0192320d08237f649cba2e535969305e6c70" }
+];
+
+const ROLE_COLORS = [
+  { match: ["ignitors"], bg: "var(--tag-1-bg)", color: "var(--tag-1-text)" },
+  { match: ["coaches", "guides", "coaches & guides"], bg: "var(--tag-2-bg)", color: "var(--tag-2-text)" },
+  { match: ["guides"], bg: "var(--tag-3-bg)", color: "var(--tag-3-text)" },
+  { match: ["conveners"], bg: "var(--tag-5-bg)", color: "var(--tag-5-text)" },
+  { match: ["managers"], bg: "var(--tag-4-bg)", color: "var(--tag-4-text)" },
+  { match: ["all team"], bg: "var(--tag-6-bg)", color: "var(--tag-6-text)" }
+];
+
+function getRoleStyle(user) {
+  const lower = user.toLowerCase();
+  for (const r of ROLE_COLORS) {
+    if (r.match.some(m => lower.includes(m))) return `background:${r.bg};color:${r.color};`;
+  }
+  return `background:var(--tag-6-bg);color:var(--tag-6-text);`;
+}
+
+let allLinks = [];
+let activeFilter = 'all';
+
+// ── FILTER PILLS ──
+function buildFilters() {
+  const roles = ['All', ...new Set(allLinks.map(l => l.user))];
+  const bar = document.getElementById('filterPills');
+  bar.innerHTML = roles.map(r => `
+    <button class="pill ${(r === 'All' && activeFilter === 'all') || r === activeFilter ? 'active' : ''}"
+      onclick="setFilter('${r}')">${r}</button>
+  `).join('');
+}
+
+function setFilter(r) {
+  activeFilter = r === 'All' ? 'all' : r;
+  buildFilters();
+  renderCards();
+}
+
+// ── CARDS ──
+function renderCards() {
+  const q = document.getElementById('searchInput').value.toLowerCase();
+  let filtered = allLinks.filter(l => {
+    const matchRole = activeFilter === 'all' || l.user === activeFilter;
+    const matchQ = !q || l.name.toLowerCase().includes(q) || l.purpose.toLowerCase().includes(q) || l.user.toLowerCase().includes(q);
+    return matchRole && matchQ;
+  });
+  document.getElementById('statCount').textContent = filtered.length;
+  const grid = document.getElementById('cardsGrid');
+  if (!filtered.length) {
+    grid.innerHTML = `<div class="empty">
+      <svg width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <p>No forms match your search.</p>
+    </div>`;
+    return;
+  }
+  grid.innerHTML = filtered.map((item, i) => `
+    <div class="card" style="animation-delay:${i * 30}ms">
+      <div class="card-header">
+        <span class="card-name">${item.name}</span>
+        <span class="role-tag" style="${getRoleStyle(item.user)}">${item.user}</span>
+      </div>
+      <p class="card-purpose">${item.purpose}</p>
+      <a class="open-btn" href="${item.link}" target="_blank" rel="noopener noreferrer">
+        Open form
+        <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M7 17 17 7M7 7h10v10"/></svg>
+      </a>
+    </div>
+  `).join('');
+}
+
+// ── CSV PARSER ──
+function parseCSV(text) {
+  const lines = text.trim().split('\n');
+  if (lines.length < 2) return [];
+  return lines.slice(1).map(line => {
+    const cols = [];
+    let cur = '', inQ = false;
+    for (let i = 0; i < line.length; i++) {
+      const ch = line[i];
+      if (ch === '"') { inQ = !inQ; }
+      else if (ch === ',' && !inQ) { cols.push(cur.trim()); cur = ''; }
+      else { cur += ch; }
+    }
+    cols.push(cur.trim());
+    return { name: cols[0] || '', user: cols[1] || '', purpose: cols[2] || '', link: cols[3] || '' };
+  }).filter(r => r.name && r.link);
+}
+
+// ── LIVE SHEET FETCH ──
+async function fetchSheet(url) {
+  // Normalise to CSV export URL
+  let csvUrl = url.trim();
+  if (!csvUrl.includes('output=csv')) {
+    const match = csvUrl.match(/\/d\/([a-zA-Z0-9-_]+)/);
+    if (match) csvUrl = `https://docs.google.com/spreadsheets/d/${match[1]}/pub?output=csv`;
+  }
+  // Cache-bust so browser always fetches fresh data
+  csvUrl += (csvUrl.includes('?') ? '&' : '?') + '_cb=' + Date.now();
+  const resp = await fetch(csvUrl);
+  if (!resp.ok) throw new Error('Fetch failed');
+  return parseCSV(await resp.text());
+}
+
+// ── MODAL (for updating the Sheet URL) ──
+function showSetup() { document.getElementById('setupModal').classList.remove('hidden'); }
+function hideSetup() { document.getElementById('setupModal').classList.add('hidden'); }
+
+async function connectSheet() {
+  const url = document.getElementById('sheetUrl').value.trim();
+  const err = document.getElementById('sheetError');
+  err.style.display = 'none';
+  if (!url) return;
+  try {
+    const links = await fetchSheet(url);
+    if (!links.length) throw new Error('No data');
+    // Show the new URL to copy into the file
+    err.style.color = 'green';
+    err.style.display = 'block';
+    err.textContent = '✓ Connected! Copy this URL into the SHEET_CSV_URL line in the HTML file to make it permanent for everyone.';
+    allLinks = links;
+    updateTimestamp();
+    document.getElementById('noSheetNotice').classList.add('hidden');
+    buildFilters();
+    renderCards();
+  } catch(e) {
+    err.style.color = '';
+    err.style.display = 'block';
+    err.textContent = 'Could not load that Sheet. Make sure it\'s published as CSV and try again.';
+  }
+}
+
+function updateTimestamp() {
+  document.getElementById('lastUpdated').textContent = 'Live from Google Sheets · ' + new Date().toLocaleString('en-ZA', { dateStyle: 'medium', timeStyle: 'short' });
+}
+
+// ── INIT — always fetch live on every page load ──
+(async () => {
+  if (SHEET_CSV_URL) {
+    try {
+      const links = await fetchSheet(SHEET_CSV_URL);
+      if (links.length) {
+        allLinks = links;
+        updateTimestamp();
+        document.getElementById('noSheetNotice').classList.add('hidden');
+      } else {
+        throw new Error('Empty');
+      }
+    } catch(e) {
+      // Sheet fetch failed — fall back to built-in data
+      allLinks = [...BUILTIN];
+      document.getElementById('lastUpdated').textContent = 'Sheet unavailable — showing built-in data';
+    }
+  } else {
+    // No Sheet URL set — use built-in data and show notice
+    allLinks = [...BUILTIN];
+    document.getElementById('lastUpdated').textContent = 'Built-in data (no Sheet connected)';
+  }
+  buildFilters();
+  renderCards();
+})();
+</script>
+</body>
+</html>
