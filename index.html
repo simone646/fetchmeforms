@@ -472,21 +472,23 @@ const SHEET_CSV_URL = "";
 
 const BUILTIN = [
   { name: "Enrollment Form", user: "Ignitors", purpose: "To enrol new young people into the system", link: "https://form.jotform.com/250931415444554/prefill/0199035b2b56716ca08182f457ab2bfc6c70" },
+  { name: "Enrollment Form", user: "Coaches", purpose: "To enrol new young people into the system", link: "https://form.jotform.com/250931415444554/prefill/0199035b2b56716ca08182f457ab2bfc6c70" },
   { name: "PDF Enrollment Form", user: "Ignitors", purpose: "Printable/editable form for enrolment at peer support groups or events. Complete on PC/tablet before transferring to the Enrollment Form.", link: "https://drive.google.com/file/d/1XwPnRLVeM8juPreUiN0bfkbeResn2owT/view?usp=drive_link" },
   { name: "Coach Assignment Form", user: "ALL TEAM", purpose: "To assign a young person to a Coach if they decide to do coaching after enrollment.", link: "https://form.jotform.com/260362872736059/prefill/019c32a3c7d87eac8ddacf2c375d25726c70" },
-  { name: "Touch Point Survey", user: "Coaches & Guides", purpose: "Completed at intake session and post session 3 to evaluate programme impact for young people.", link: "https://form.jotform.com/250831258643559/prefill/01960f2305387eccbce8ee9404c484476c70" },
+  { name: "Touch Point Survey", user: "Coaches", purpose: "Completed at intake session and post session 3 to evaluate programme impact for young people.", link: "https://form.jotform.com/250831258643559/prefill/01960f2305387eccbce8ee9404c484476c70" },
   { name: "M&E Form", user: "ALL TEAM", purpose: "To capture any engagement with a young person — support needs, peer connect, and peer support groups held.", link: "https://form.jotform.com/250931494080557/prefill/01960f268ff875b6936c0f63def0b34a6c70" },
-  { name: "Status Form", user: "Coaches & Guides", purpose: "To capture status of young people who haven't had sessions for some time.", link: "https://form.jotform.com/242701333372044/prefill/0192320d08237f649cba2e535969305e6c70" },
+  { name: "M&E Form", user: "Coaches", purpose: "To capture any engagement with a young person — support needs, peer connect, and peer support groups held.", link: "https://form.jotform.com/250931494080557/prefill/01960f268ff875b6936c0f63def0b34a6c70" },
+  { name: "Post session 1 survey", user: "Coaches", purpose: "To capture feedback on Session 1. This form may be completed by the young person ON THEIR OWN. Coaches can open the link on their phones, and hand to the young person to complete on their own.", link: "https://form.jotform.com/261242183662050" },
+  { name: "Status Form", user: "Coaches", purpose: "To capture status of young people who haven't had sessions for some time.", link: "https://form.jotform.com/242701333372044/prefill/0192320d08237f649cba2e535969305e6c70" },
   { name: "Role Play Form", user: "Guides", purpose: "To capture continuous learning moments for coaches during role plays.", link: "https://form.jotform.com/242551283487058/prefill/0191e57371ff7e28b49f9a0bd5ad684b6c70" },
   { name: "Journey Book Review Form", user: "Guides", purpose: "To capture learnings for coaches while reviewing journey books.", link: "https://form.jotform.com/242551497731057/prefill/0191e4bc127779db8a07ac40d3747bcf6c70" },
   { name: "Youth Service Provider Form", user: "ALL TEAM", purpose: "Collect data about service providers for service mapping.", link: "https://form.jotform.com/230193793534561/prefill/019197bbdcad71c2aaba9f0fccd13aaa6c70" },
   { name: "Youth Collective Activity Form", user: "Conveners", purpose: "To capture meetings convened and attendance of service providers at Youth Collectives.", link: "https://form.jotform.com/251911994224056/prefill/019c2bc9c9f579f3af2f8d60d8cfe1766c70" },
-  { name: "Incident Report Form", user: "Managers", purpose: "To capture any incidents affecting programme implementation (e.g. protests affecting recruitment or sessions).", link: "https://form.jotform.com/242701333372044/prefill/0192320d08237f649cba2e535969305e6c70" }
+  { name: "Incident Report Form", user: "ALL TEAM", purpose: "To capture any incidents affecting programme implementation (e.g. protests affecting recruitment or sessions).", link: "https://form.jotform.com/242701333372044/prefill/0192320d08237f649cba2e535969305e6c70" }
 ];
 
 const ROLE_COLORS = [
   { match: ["ignitors"], bg: "var(--tag-1-bg)", color: "var(--tag-1-text)" },
-  { match: ["coaches & guides"], bg: "var(--tag-2-bg)", color: "var(--tag-2-text)" },
   { match: ["coaches"], bg: "var(--tag-2-bg)", color: "var(--tag-2-text)" },
   { match: ["guides"], bg: "var(--tag-3-bg)", color: "var(--tag-3-text)" },
   { match: ["conveners"], bg: "var(--tag-5-bg)", color: "var(--tag-5-text)" },
